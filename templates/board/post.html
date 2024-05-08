@@ -1,0 +1,15 @@
+{% extends 'board/index.html' %}
+
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+    <div class="space-10">
+        <h2>{{ post.title }}</h2>
+    </div>
+    <div class="space-10">
+        {{ post.pub_date|date:'d F, Y' }}<br>
+        {{ post.text }}<br>
+    </div>
+{% endblock content %}

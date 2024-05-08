@@ -1,25 +1,22 @@
-{% extends 'bootstrap/index.html' %}
+{% extends 'board/index.html' %}
 
 {% block title %}
 Board
 {% endblock title %}
 
 {% block content %}
-    <h1 class="space-h">All posts ({{ paginator.count }})</h1>
-
-    {% if postlist %}
-        {% for post in postlist %}
+    <h1 class="space-h">All posts in #{{ category }} ({{ paginator.count }})</h1>
+    {% if post_category %}
+        {% for post in post_category %}
             <div class="space-12">
                 <a href="{% url 'post_detail' post.id %}"><h6>{{ post.title }}</h6></a>
                 by <i>{{ post.author }}</i><br>
                 {{ post.pub_date|date:'d F, Y' }}<br>
-                <!-- post.preview? -->
                 {{ post.text|truncatewords:20 }}<br>
-                <a href="{% url 'post_category' post.category.id %}"> #{{ post.category }}</a>
             </div>
         {% endfor %}
     {% else %}
-        <h4>Why is there no posts here?</h4>
+        <h4>Why is there no news here?</h4>
     {% endif %}
 
     {% if is_paginated %}
@@ -41,5 +38,4 @@ Board
             <a href="?page={{ page_obj.paginator.num_pages }}&{{ params }}">>>></a>
         {% endif %}
     {% endif %}
-
 {% endblock content %}
