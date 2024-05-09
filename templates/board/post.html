@@ -12,4 +12,7 @@ Post
         {{ post.pub_date|date:'d F, Y' }}<br>
         {{ post.text }}<br>
     </div>
+    <div class="text-center space-10">
+        <input type="button" value="back" onclick="window.history.back()">
+    </div>
 {% endblock content %}
