@@ -37,7 +37,7 @@ class Post(models.Model):
         return f'{result[:40]}...'
 
     def get_absolute_url(self):
-        return f'/post/{self.id}'
+        return f'/board/{self.id}'
 
 
 class Comment(models.Model):
