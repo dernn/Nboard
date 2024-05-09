@@ -42,14 +42,14 @@ class PostUpdateView(UpdateView):
         return Post.objects.get(pk=id)
 
     # author verification
-    def dispatch(self, request, *args, **kwargs):
-        post = self.get_object()
-
-        context = {'post_id': post.pk}
-        if post.author != self.request.user:
-            return render(self.request, template_name='board/post_lock.html', context=context)
-
-        return super(PostUpdateView, self).dispatch(request, *args, **kwargs)
+    # def dispatch(self, request, *args, **kwargs):
+    #     post = self.get_object()
+    #
+    #     context = {'post_id': post.pk}
+    #     if post.author != self.request.user:
+    #         return render(self.request, template_name='board/post_lock.html', context=context)
+    #
+    #     return super(PostUpdateView, self).dispatch(request, *args, **kwargs)
 
 
 class CategoryListView(PostListView):
