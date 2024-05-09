@@ -46,3 +46,6 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     accept = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return f'/board/{self.post.id}'
