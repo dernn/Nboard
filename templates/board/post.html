@@ -11,7 +11,19 @@ Post
     <div class="space-10">
         {{ post.pub_date|date:'d F, Y' }}<br>
         {{ post.text }}<br>
+        <a href="{% url 'comment_create' post.id %}">Respond</a>
+        <a href="{% url 'post_update' post.id %}">Edit</a>
     </div>
+
+    <!-- block of post comments -->
+    {% for comment in comment_set %}
+        <div class="space-10">
+            by <i>{{ comment.author }}</i><br>
+            {{ comment.pub_date|date:'d F G:i:s, Y' }}<br>
+            {{ comment.text }}<br>
+        </div>
+    {% endfor %}
+
     <div class="text-center space-10">
         <input type="button" value="back" onclick="window.history.back()">
     </div>

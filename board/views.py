@@ -19,6 +19,13 @@ class PostDetailView(DetailView):
     template_name = 'board/post.html'
     context_object_name = 'post'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        id = self.kwargs.get('pk')
+        post = Post.objects.get(pk=id)
+        context['comment_set'] = post.comment_set.all().order_by('-pub_date')
+        return context
+
 
 # permission instead login_required?
 class PostCreateView(CreateView):
@@ -74,6 +81,13 @@ class CommentCreateView(CreateView):
     form_class = CommentForm
     template_name = 'board/comment_create.html'
     context_object_name = 'comment'
+
+    def get_context_data(self, **kwargs):
+        id = self.kwargs.get('pk')
+        post = Post.objects.get(pk=id)
+        context = super().get_context_data(**kwargs)
+        context['post'] = post
+        return context
 
     def form_valid(self, form):
         post_id = self.kwargs.get('pk')  # post.id from URL
