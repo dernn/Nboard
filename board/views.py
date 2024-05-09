@@ -20,6 +20,7 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
 
 
+# permission instead login_required?
 class PostCreateView(CreateView):
     template_name = 'board/post_create.html'
     form_class = PostForm

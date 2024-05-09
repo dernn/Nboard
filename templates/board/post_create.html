@@ -1,0 +1,22 @@
+{% extends 'board/index.html' %}
+
+{% block title %}
+    Creating
+{% endblock title %}
+
+{% block content %}
+    <div class="space-10">
+        <h4>Create new</h4>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="space-10">
+            {% for field in form %}
+                {{ field.label_tag }}<br>
+                {{ field }}<br>
+            {% endfor %}
+        </div>
+            <input type="submit" value="Post">
+        </div>
+    </form>
+{% endblock content %}
