@@ -33,7 +33,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
-    template_name = 'board/post_edit.html'
+    template_name = 'board/post_update.html'
     form_class = PostForm
 
     def get_object(self, **kwargs):

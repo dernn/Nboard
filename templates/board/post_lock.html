@@ -1,0 +1,14 @@
+{% extends 'board/index.html' %}
+
+{% block title %}
+Access denied
+{% endblock title %}
+
+{% block content %}
+    <h2>Access denied</h2>
+    <hr>
+    <h3>You cannot edit other users posts.</h3>
+    <div class="text-center space-10">
+        <input type="button" value="backward" onclick="window.history.back()">
+    </div>
+{% endblock content %}
