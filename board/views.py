@@ -1,7 +1,7 @@
 from board.forms import CommentForm, PostForm
 from board.models import Comment, Post, Category
 
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
@@ -20,10 +20,9 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
 
 
-class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    form_class = PostForm
-    permission_required = ('board.add_post',)
+class PostCreateView(LoginRequiredMixin, CreateView):
     template_name = 'board/post_create.html'
+    form_class = PostForm
 
     # Field.initial/Field.disabled alt. solution
     def form_valid(self, form):
@@ -33,8 +32,7 @@ class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    permission_required = ('board.change_post',)
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'board/post_edit.html'
     form_class = PostForm
 
@@ -52,21 +50,6 @@ class PostUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
         return super(PostUpdateView, self).dispatch(request, *args, **kwargs)
 
-
-# class PostDeleteView(DeleteView):
-#     model = Post
-#     template_name = 'board/post_delete.html'
-#     success_url = '/board/'
-#
-#     # author verification
-#     def dispatch(self, request, *args, **kwargs):
-#         post = self.get_object()
-#
-#         context = {'post_id': post.pk}
-#         if post.author != self.request.user:
-#             return render(self.request, template_name='board/post_lock.html', context=context)
-#
-#         return super(PostDeleteView, self).dispatch(request, *args, **kwargs)
 
 class CategoryListView(PostListView):
     template_name = 'board/post_category.html'
