@@ -68,11 +68,23 @@ class CategoryListView(PostListView):
         return context
 
 
+# login_required here
 class CommentCreateView(CreateView):
     model = Comment
     form_class = CommentForm
     template_name = 'board/comment_create.html'
     context_object_name = 'comment'
+
+    def form_valid(self, form):
+        post_id = self.kwargs.get('pk')  # post.id from URL
+        post = get_object_or_404(Post, pk=post_id)  # get Post object
+
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.author = self.request.user
+        comment.save()
+
+        return super().form_valid(form)
 
 
 class CommentDetailView(DetailView):
