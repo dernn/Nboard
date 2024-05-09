@@ -15,6 +15,7 @@ Board
                 {{ post.pub_date|date:'d F, Y' }}<br>
                 <!-- post.preview? -->
                 {{ post.text|truncatewords:20 }}<br>
+                <a href="{% url 'comment_create' post.id %}">Respond</a>
                 <a href="{% url 'post_update' post.id %}">Edit</a>
                 <a href="{% url 'post_category' post.category.id %}"> #{{ post.category }}</a>
             </div>
