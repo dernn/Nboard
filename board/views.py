@@ -20,7 +20,7 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(CreateView):
     template_name = 'board/post_create.html'
     form_class = PostForm
 
@@ -32,7 +32,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, UpdateView):
+class PostUpdateView(UpdateView):
     template_name = 'board/post_edit.html'
     form_class = PostForm
 
@@ -67,7 +67,7 @@ class CategoryListView(PostListView):
         return context
 
 
-class CommentCreateView(LoginRequiredMixin, CreateView):
+class CommentCreateView(CreateView):
     model = Comment
     form_class = CommentForm
     template_name = 'board/comment_create.html'
@@ -78,7 +78,7 @@ class CommentDetailView(DetailView):
     pass
 
 
-class CommentUpdateView(LoginRequiredMixin, UpdateView):
+class CommentUpdateView(UpdateView):
     pass
 
 
@@ -90,6 +90,6 @@ class CommentDeleteView(DeleteView):
 # приватная страница с откликами на объявления пользователя,
 # внутри которой он может фильтровать отклики по объявлениям,
 # удалять их и принимать (~перенести в sign/protect)
-class PrivateSearchListView(LoginRequiredMixin, ListView):
+class PrivateSearchListView(ListView):
     model = Comment
     pass
