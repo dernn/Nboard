@@ -26,11 +26,11 @@ class PostCreateView(CreateView):
     form_class = PostForm
 
     # Field.initial/Field.disabled alt. solution
-    def form_valid(self, form):
-        post = form.save(commit=False)
-        post.author = self.request.user
-        post.save()
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     post = form.save(commit=False)
+    #     post.author = self.request.user
+    #     post.save()
+    #     return super().form_valid(form)
 
 
 class PostUpdateView(UpdateView):

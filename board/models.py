@@ -2,6 +2,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import TextField
 from django.utils import html
 
 
@@ -23,10 +24,10 @@ class Category(models.Model):
 
 class Post(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=60, default='Title')
-    text = RichTextUploadingField()
+    text = TextField()
 
     def __str__(self):
         return f'{self.title}: {self.text[:40]}'
