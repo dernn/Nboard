@@ -20,5 +20,5 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     # connect app's endpoints
-    path('', include('board.urls')),
+    path('board/', include('board.urls')),
 ]
