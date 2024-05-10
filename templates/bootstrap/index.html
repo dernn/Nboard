@@ -30,7 +30,16 @@
                                 <li><a class="dropdown-item" href="{% url 'post_create' %}">Add post</a></li>
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                <!-- проверка авторизации для dropdown-item -->
+                                {% if user.is_authenticated %}
+                                    <li><a class="dropdown-item" href="{% url 'personal_search' %}">Personal page</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" href="/">Log in</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                     </ul>

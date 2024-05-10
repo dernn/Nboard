@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # install core app
     'board',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
