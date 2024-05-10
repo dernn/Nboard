@@ -18,23 +18,16 @@ Private page
     {% endif %}
 
     {% if personal %}
-        {% for post in personal %}
-
-                <!-- block of post comments -->
-                {% for comment in post.comment_set.all %}
-                    <div class="space-12">
-                        by <i>{{ comment.author }}</i><br>
-                        {{ comment.pub_date|date:'d F G:i:s, Y' }}<br>
-                        {{ comment.text }}<br>
-
-                        <!-- Delete & Accept buttons below -->
-                        <a href="{% url 'comment_create' post.id %}">Delete</a>
-                        <a href="{% url 'post_update' post.id %}">Accept</a>
-
-                    </div>
-                {% endfor %}
-
-
+        {% for comment in personal %}
+            <!-- block of post comments -->
+            <div class="space-12">
+                by <i>{{ comment.author }}</i><br>
+                {{ comment.pub_date|date:'d F G:i:s, Y' }}<br>
+                {{ comment.text }}<br>
+                <!-- Delete & Accept buttons below [fix links] -->
+                <a href="{% url 'comment_create' comment.id %}">Delete</a>
+                <a href="{% url 'post_update' comment.id %}">Accept</a>
+            </div>
         {% endfor %}
 
     {% else %}
