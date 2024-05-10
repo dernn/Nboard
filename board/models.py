@@ -30,7 +30,7 @@ class Post(models.Model):
     text = TextField()
 
     def __str__(self):
-        return f'{self.title}: {self.text[:40]}'
+        return f'{self.title}'
 
     def preview(self):
         result = html.strip_tags(self.text)

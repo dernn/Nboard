@@ -1,0 +1,57 @@
+{% extends 'board/index.html' %}
+
+{% block title %}
+Private page
+{% endblock title %}
+
+{% block content %}
+    <h1 class="space-h">All responses ({{ paginator.count }})</h1>
+    <!-- condition for SearchListView-->
+    {% if filter %}
+        <div class="space-h">
+            <form method="GET">
+               {{ filter.form }}
+               <input type="submit" value="Search">
+            </form>
+            <br>
+        </div>
+    {% endif %}
+
+    {% if personal %}
+        {% for post in personal %}
+            <div class="space-12">
+                <a href="{% url 'post_detail' post.id %}"><h6>{{ post.title }}</h6></a>
+                <a href="{% url 'post_category' post.category.id %}"> #{{ post.category }}</a><br>
+                by <i>{{ post.author }}</i><br>
+                {{ post.pub_date|date:'d F, Y' }}<br>
+                <!-- post.preview? -->
+                {{ post.text|truncatewords:20 }}<br>
+                <a href="{% url 'comment_create' post.id %}">Respond</a>
+                <a href="{% url 'post_update' post.id %}">Edit</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h4>Why is there no posts here?</h4>
+    {% endif %}
+
+    {% if is_paginated %}
+        <!-- first page -->
+        {% if page_obj.has_previous and page_obj.number > 2 %}
+            <a href="?page=1&{{ params }}"><<<</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a>{{ num }}</a>
+            {% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}&{{ params }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        <!-- last page -->
+        {% if page_obj.has_next and page_obj.number < page_obj.paginator.num_pages|add:'-2' %}
+            <a href="?page={{ page_obj.paginator.num_pages }}&{{ params }}">>>></a>
+        {% endif %}
+    {% endif %}
+
+{% endblock content %}

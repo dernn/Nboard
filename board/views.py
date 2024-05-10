@@ -1,3 +1,6 @@
+import re
+
+from board.filters import PostFilter
 from board.forms import CommentForm, PostForm
 from board.models import Comment, Post, Category
 
@@ -109,7 +112,7 @@ class CommentUpdateView(UpdateView):
     pass
 
 
-# ~для PrivateSearchListView
+# ~для PersonalListView
 class CommentDeleteView(DeleteView):
     pass
 
@@ -117,6 +120,23 @@ class CommentDeleteView(DeleteView):
 # приватная страница с откликами на объявления пользователя,
 # внутри которой он может фильтровать отклики по объявлениям,
 # удалять их и принимать (~перенести в sign/protect)
-class PrivateSearchListView(ListView):
-    model = Comment
-    pass
+class PersonalSearchListView(ListView):
+    model = Post
+    ordering = '-pub_date'
+    template_name = 'board/personal.html'
+    context_object_name = 'personal'
+    paginate_by = 3
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(author=self.request.user)
+        self.queryset = PostFilter(self.request.GET, request=self.request, queryset=queryset)
+        return self.queryset.qs  # return .qs, otherwise the filter doesn't work
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = self.queryset
+        try:
+            context['params'] = re.sub(r'page=\d*\&', '', context['filter'].data.urlencode())
+        except AttributeError:
+            context['params'] = None
+        return context
