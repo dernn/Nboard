@@ -19,17 +19,24 @@ Private page
 
     {% if personal %}
         {% for post in personal %}
-            <div class="space-12">
-                <a href="{% url 'post_detail' post.id %}"><h6>{{ post.title }}</h6></a>
-                <a href="{% url 'post_category' post.category.id %}"> #{{ post.category }}</a><br>
-                by <i>{{ post.author }}</i><br>
-                {{ post.pub_date|date:'d F, Y' }}<br>
-                <!-- post.preview? -->
-                {{ post.text|truncatewords:20 }}<br>
-                <a href="{% url 'comment_create' post.id %}">Respond</a>
-                <a href="{% url 'post_update' post.id %}">Edit</a>
-            </div>
+
+                <!-- block of post comments -->
+                {% for comment in post.comment_set.all %}
+                    <div class="space-12">
+                        by <i>{{ comment.author }}</i><br>
+                        {{ comment.pub_date|date:'d F G:i:s, Y' }}<br>
+                        {{ comment.text }}<br>
+
+                        <!-- Delete & Accept buttons below -->
+                        <a href="{% url 'comment_create' post.id %}">Delete</a>
+                        <a href="{% url 'post_update' post.id %}">Accept</a>
+
+                    </div>
+                {% endfor %}
+
+
         {% endfor %}
+
     {% else %}
         <h4>Why is there no posts here?</h4>
     {% endif %}

@@ -1,5 +1,5 @@
-from django_filters import FilterSet, ModelChoiceFilter, CharFilter
-from django.forms import Select
+from django_filters import FilterSet, ModelChoiceFilter
+
 from board.models import Post
 
 
@@ -13,12 +13,3 @@ def posts(request):
 
 class PostFilter(FilterSet):
     title = ModelChoiceFilter(queryset=posts)
-
-    # class Meta:
-    #     model = Post
-    #     fields = ['title', ]
-    # class Meta:
-    #     model = Post
-    #     fields = {
-    #         'title': ['icontains'],
-    #     }
