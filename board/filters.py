@@ -11,5 +11,8 @@ def posts(request):
     return user.post_set.all()
 
 
-class PostFilter(FilterSet):
-    title = ModelChoiceFilter(queryset=posts)
+class CommentFilter(FilterSet):
+    title = ModelChoiceFilter(
+        field_name='post__title',
+        queryset=posts,
+    )

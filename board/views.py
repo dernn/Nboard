@@ -1,6 +1,6 @@
 import re
 
-from board.filters import PostFilter
+from board.filters import CommentFilter
 from board.forms import CommentForm, PostForm
 from board.models import Comment, Post, Category
 
@@ -119,15 +119,15 @@ class CommentDeleteView(DeleteView):
 # внутри которой он может фильтровать отклики по объявлениям,
 # удалять их и принимать (~перенести в sign/protect)
 class PersonalSearchListView(LoginRequiredMixin, ListView):
-    model = Post
+    model = Comment
     ordering = '-pub_date'
     template_name = 'board/personal.html'
     context_object_name = 'personal'
     paginate_by = 3
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(author=self.request.user)
-        self.queryset = PostFilter(self.request.GET, request=self.request, queryset=queryset)
+        queryset = super().get_queryset().filter(post__author=self.request.user)
+        self.queryset = CommentFilter(self.request.GET, request=self.request, queryset=queryset)
         return self.queryset.qs  # return .qs, otherwise the filter doesn't work
 
     def get_context_data(self, **kwargs):
