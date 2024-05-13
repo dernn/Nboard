@@ -1,11 +1,13 @@
 import re
 
+from django.contrib.auth.decorators import login_required
+
 from board.filters import CommentFilter
 from board.forms import CommentForm, PostForm
 from board.models import Comment, Post, Category
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
 
@@ -112,9 +114,23 @@ class CommentUpdateView(UpdateView):
     pass
 
 
-# ~для PersonalListView
-class CommentDeleteView(DeleteView):
-    pass
+# for PersonalSearchListView
+@login_required
+def comment_delete(request, pk):
+    """
+    Метод проверяет, входит ли пост, к которому принадлежит переданный комментарий,
+    во множество всех постов, принадлежащих автору.
+    Если нет - рендерит страницу блокировки.
+    """
+    comment = Comment.objects.get(id=pk)
+    comment_post = comment.post
+    user_posts = Post.objects.filter(author=request.user)
+    if comment_post not in user_posts:
+        context = {'comment_id': pk}
+        return render(request, template_name='board/comment_lock.html', context=context)
+
+    comment.delete()
+    return redirect(request.META.get('HTTP_REFERER'))  # redirects to the previous page
 
 
 # приватная страница с откликами на объявления пользователя,
