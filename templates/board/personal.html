@@ -26,8 +26,11 @@ Private page
                 {{ comment.text }}<br>
                 <!-- Delete & Accept buttons below [fix links] -->
                 <a class="btn btn-danger" href="{% url 'comment_delete' comment.id %}" role="button">Delete</a>
+                {% if comment.accept %}
+                <a class="btn btn-warning" href="{% url 'comment_decline' comment.id %}" role="button">Decline</a>
+                {% else %}
                 <a class="btn btn-success" href="{% url 'comment_accept' comment.id %}" role="button">Accept</a>
-                <!-- Decline button here [yellow] -->
+                {% endif %}
             </div>
         {% endfor %}
 

@@ -121,6 +121,19 @@ def comment_accept(request, pk):
 
 # for PersonalSearchListView
 @login_required
+def comment_decline(request, pk):
+    comment = Comment.objects.get(id=pk)
+    if comment_not_in_user_post(request, comment):
+        context = {'comment_id': comment.id}
+        return render(request, template_name='board/comment_lock.html', context=context)
+
+    comment.accept = False
+    comment.save()
+    return redirect(request.META.get('HTTP_REFERER'))  # redirects to the previous page
+
+
+# for PersonalSearchListView
+@login_required
 def comment_delete(request, pk):
     comment = Comment.objects.get(id=pk)
     if comment_not_in_user_post(request, comment):
@@ -135,7 +148,7 @@ class PersonalSearchListView(LoginRequiredMixin, ListView):
     """
     Приватная страница с откликами на объявления пользователя,
     внутри которой он может фильтровать отклики по объявлениям,
-    удалять их и принимать (~перенести в sign/protect)
+    удалять их и принимать.
     """
     model = Comment
     ordering = '-pub_date'
