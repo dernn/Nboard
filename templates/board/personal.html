@@ -25,8 +25,9 @@ Private page
                 {{ comment.pub_date|date:'d F G:i:s, Y' }}<br>
                 {{ comment.text }}<br>
                 <!-- Delete & Accept buttons below [fix links] -->
-                <a class="btn btn-primary" href="{% url 'comment_delete' comment.id %}" role="button">Delete</a>
-                <a class="btn btn-primary" href="{% url 'post_update' comment.id %}" role="button">Accept</a>
+                <a class="btn btn-danger" href="{% url 'comment_delete' comment.id %}" role="button">Delete</a>
+                <a class="btn btn-success" href="{% url 'post_update' comment.id %}" role="button">Accept</a>
+                <!-- Decline button here [yellow] -->
             </div>
         {% endfor %}
 
