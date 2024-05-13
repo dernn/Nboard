@@ -1,5 +1,5 @@
 from board.views import PostListView, PostDetailView, CategoryListView, PostCreateView, PostUpdateView, \
-    CommentCreateView, PersonalSearchListView, comment_delete
+    CommentCreateView, PersonalSearchListView, comment_delete, comment_accept
 
 from django.urls import path
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:pk>/comment/', CommentCreateView.as_view(), name='comment_create'),
     path('personal/', PersonalSearchListView.as_view(), name='personal_search'),
     path('<int:pk>/delete/', comment_delete, name='comment_delete'),
+    path('<int:pk>/accept/', comment_accept, name='comment_accept'),
 ]

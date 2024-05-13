@@ -10,6 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
+from board.utils import comment_in_user_post
+
 
 class PostListView(ListView):
     model = Post
@@ -104,12 +106,14 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class CommentDetailView(DetailView):
-    pass
-
-
-class CommentUpdateView(LoginRequiredMixin, UpdateView):
-    pass
+# for PersonalSearchListView
+@login_required
+def comment_accept(request, pk):
+    comment = Comment.objects.get(id=pk)
+    if comment_in_user_post(request, comment):
+        comment.accept = True
+        comment.save()
+        return redirect(request.META.get('HTTP_REFERER'))  # redirects to the previous page
 
 
 # for PersonalSearchListView
