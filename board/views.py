@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 
-from board.utils import comment_in_user_post
+from board.utils import comment_not_in_user_post
 
 
 class PostListView(ListView):
@@ -110,35 +110,33 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 @login_required
 def comment_accept(request, pk):
     comment = Comment.objects.get(id=pk)
-    if comment_in_user_post(request, comment):
-        comment.accept = True
-        comment.save()
-        return redirect(request.META.get('HTTP_REFERER'))  # redirects to the previous page
+    if comment_not_in_user_post(request, comment):
+        context = {'comment_id': comment.id}
+        return render(request, template_name='board/comment_lock.html', context=context)
+
+    comment.accept = True
+    comment.save()
+    return redirect(request.META.get('HTTP_REFERER'))  # redirects to the previous page
 
 
 # for PersonalSearchListView
 @login_required
 def comment_delete(request, pk):
-    """
-    Метод проверяет, входит ли пост, к которому принадлежит переданный комментарий,
-    во множество всех постов, принадлежащих автору.
-    Если нет - рендерит страницу блокировки.
-    """
     comment = Comment.objects.get(id=pk)
-    comment_post = comment.post
-    user_posts = Post.objects.filter(author=request.user)
-    if comment_post not in user_posts:
-        context = {'comment_id': pk}
+    if comment_not_in_user_post(request, comment):
+        context = {'comment_id': comment.id}
         return render(request, template_name='board/comment_lock.html', context=context)
 
     comment.delete()
     return redirect(request.META.get('HTTP_REFERER'))  # redirects to the previous page
 
 
-# приватная страница с откликами на объявления пользователя,
-# внутри которой он может фильтровать отклики по объявлениям,
-# удалять их и принимать (~перенести в sign/protect)
 class PersonalSearchListView(LoginRequiredMixin, ListView):
+    """
+    Приватная страница с откликами на объявления пользователя,
+    внутри которой он может фильтровать отклики по объявлениям,
+    удалять их и принимать (~перенести в sign/protect)
+    """
     model = Comment
     ordering = '-pub_date'
     template_name = 'board/personal.html'

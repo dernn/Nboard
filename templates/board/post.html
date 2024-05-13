@@ -9,6 +9,7 @@ Post
         <h2>{{ post.title }}</h2>
     </div>
     <div class="space-10">
+        by <i>{{ post.author }}</i><br>
         {{ post.pub_date|date:'d F, Y' }}<br>
         {{ post.text }}<br>
         <a href="{% url 'comment_create' post.id %}">Respond</a>
