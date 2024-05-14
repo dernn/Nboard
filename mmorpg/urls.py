@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # connect app's endpoints
     path('board/', include('board.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
