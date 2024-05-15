@@ -25,7 +25,6 @@
             <div>
                 <strong>{% trans "Menu:" %}</strong>
                 <ul>
-                    <div class="space-10">
                     {% if user.is_authenticated %}
                         <li>
                             <a href="{% url 'account_email' %}">{% trans "Change Email" %}</a>
@@ -41,9 +40,9 @@
                             <a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
                         </li>
                     {% endif %}
-                    </div>
                 </ul>
             </div>
+            <!-- How to fix text alignment in this place? -->
             {% block content %}
             {% endblock content %}
         {% endblock body %}
