@@ -5,7 +5,7 @@ Private page
 {% endblock title %}
 
 {% block content %}
-    <h1 class="space-h">All responses to <i>{{ request.user.username }}</i> posts ({{ paginator.count }})</h1>
+    <h1 class="space-h">All responses ({{ paginator.count }}) to <i>{{ request.user.username }}</i> posts</h1>
     <!-- condition for SearchListView-->
     {% if filter %}
         <div class="space-h">
