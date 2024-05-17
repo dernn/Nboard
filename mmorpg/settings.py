@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import dotenv_values  # use python-dotenv
+
+config = dotenv_values()  # include all values from .env like dict
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'mailing.apps.MailingConfig',  # connecting custom config (apps.MailingConfig)
 ]
 
 MIDDLEWARE = [
@@ -156,5 +160,22 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'mandatory'
+# ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
+# ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
+# for django.core.mail
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = config['EMAIL_HOST_USER']  # имя пользователя [до @domain]
+EMAIL_HOST_PASSWORD = config['EMAIL_HOST_PASSWORD']
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = config['DEFAULT_FROM_EMAIL']
+SITE_URL = 'http://127.0.0.1:8000'
+
+# for celery
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
