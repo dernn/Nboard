@@ -30,8 +30,9 @@ def celery_notify_update_comment(pk):
     subscriber = instance.author
     sender = post.author  # другой sender
     mode = 'update'  # другой режим
+    status = instance.accept
 
-    send_notification(instance.text, post.pk, post.category, post.title, subscriber, sender, mode)
+    send_notification(instance.text, post.pk, post.category, post.title, subscriber, sender, mode, status)
 
 # @shared_task
 # def celery_weekly_mailing():

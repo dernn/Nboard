@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from board.models import Post, Category
 
 
-def send_notification(text, pk, category, title, subscriber, sender, mode='create'):
+def send_notification(text, pk, category, title, subscriber, sender, mode='create', accept=None):
     """
     Метод формирует контекст для почтового шаблона, на основе полученных
     из таски параметров создаёт письмо, прикрепляет к нему
@@ -20,6 +20,7 @@ def send_notification(text, pk, category, title, subscriber, sender, mode='creat
     :param subscriber: автор поста*
     :param sender: автор комментария
     :param mode: задаёт шаблон и тему письма
+    :param accept: статус отклика (принят/отклонен)
     """
 
     if mode == 'create':
@@ -27,8 +28,8 @@ def send_notification(text, pk, category, title, subscriber, sender, mode='creat
         subject = f'Reply to "{title}"'
     elif mode == 'update':
         template = 'comment_updated_email'
-        # can be fixed through param 'accepted' [передавать объект целиком?]
-        subject = f'{sender} has accepted/declined your response'
+        status = 'accepted' if accept else 'declined'
+        subject = f'{sender} has {status} your response'
 
     html_content = render_to_string(
         # template changes depending on the mode
