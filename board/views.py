@@ -115,7 +115,7 @@ def comment_accept(request, pk):
         return render(request, template_name='board/comment_lock.html', context=context)
 
     comment.accept = True
-    comment.save()
+    comment.save(update_fields=['accept'])
     return redirect(request.META.get('HTTP_REFERER'))  # redirects to the previous page
 
 
@@ -128,7 +128,7 @@ def comment_decline(request, pk):
         return render(request, template_name='board/comment_lock.html', context=context)
 
     comment.accept = False
-    comment.save()
+    comment.save(update_fields=['accept'])
     return redirect(request.META.get('HTTP_REFERER'))  # redirects to the previous page
 
 
