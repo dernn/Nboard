@@ -1,8 +1,8 @@
-from django.db.models.signals import post_save, pre_delete, post_delete
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 from mailing.tasks import celery_notify_create_comment, celery_notify_update_comment, celery_notify_delete_comment
-from board.models import Post, Comment
+from board.models import Comment
 
 
 @receiver(post_save, sender=Comment)  # Comment --> Post (1)

@@ -1,8 +1,7 @@
 from celery import shared_task
 
-from mailing.utils import send_notification
-# from mailing.utils import weekly_mailing
-from board.models import Post, Comment
+from mailing.utils import send_notification, weekly_mailing
+from board.models import Comment
 
 
 @shared_task
@@ -50,7 +49,13 @@ def celery_notify_delete_comment(pk):
 
     send_notification(instance.text, post.pk, post.category, post.title, subscriber, sender, mode)
 
-# @shared_task
-# def celery_weekly_mailing():
-#     # функцию еженедельной рассылки импортируем из утилит,
-#     weekly_mailing()
+
+@shared_task
+def celery_weekly_mailing():
+    """
+    Таска еженедельной рассылки;
+    функцию рассылки импортируем из утилит.
+
+    upd: возможность отправлять пользователям новостные рассылки.
+    """
+    weekly_mailing()

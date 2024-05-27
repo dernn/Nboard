@@ -1,16 +1,15 @@
 import datetime
 
-from Tools.demo.mcast import sender
 from django.conf import settings  # LazySettings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
-from board.models import Post, Category
+from board.models import Post, User
 
 
 def send_notification(text, pk, category, title, subscriber, sender, mode='create', accept=None):
     """
-    Метод формирует контекст для почтового шаблона, на основе полученных
+    Функция формирует контекст для почтового шаблона, на основе полученных
     из таски параметров создаёт письмо, прикрепляет к нему
     контент [шаблон + контекст] и отправляет адресату.
 
@@ -62,33 +61,33 @@ def send_notification(text, pk, category, title, subscriber, sender, mode='creat
     msg.send()
 
 
-# def weekly_mailing():
-#     #  Your job processing logic here...
-#     today = datetime.datetime.now()
-#     last_week = today - datetime.timedelta(days=7)
-#     posts = Post.objects.filter(pub_date__gte=last_week)  # lookup __gte
-#     categories = set(posts.values_list('category__name', flat=True))
-#     categories.remove(None)
-#     subscribers = set(Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True))
-#
-#     html_content = render_to_string(
-#         'mailing/weekly_news.html',
-#         {
-#             'link': settings.SITE_URL,
-#             'posts': posts,
-#         }
-#     )
-#
-#     # время отправки без микросекунд для заголовка
-#     sending_time = datetime.datetime.now().replace(microsecond=0)
-#
-#     msg = EmailMultiAlternatives(
-#         subject=f'News from last week {sending_time}',  # тема письма
-#         body='',
-#         from_email=settings.DEFAULT_FROM_EMAIL,
-#         to=subscribers
-#     )
-#
-#     msg.attach_alternative(html_content, 'text/html')
-#     msg.send()
-#     print(f'msg sent {sending_time}')
+def weekly_mailing():
+    """
+    Функция еженедельной расслыки;
+    рассылает всем пользователям перечень постов за последние 7 дней.
+    """
+    today = datetime.datetime.now()
+    last_week = today - datetime.timedelta(days=7)
+    posts = Post.objects.filter(pub_date__gte=last_week)  # lookup __gte
+    subscribers = set(User.objects.values_list('email', flat=True))
+
+    html_content = render_to_string(
+        'mailing/weekly_news.html',
+        {
+            'link': settings.SITE_URL,
+            'posts': posts,
+        }
+    )
+
+    sending_time = datetime.datetime.now().replace(microsecond=0)
+
+    msg = EmailMultiAlternatives(
+        subject=f'Post from last week [{sending_time}]',
+        body='',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        bcc=subscribers  # bcc скрывает адреса в массовой рассылке
+    )
+
+    msg.attach_alternative(html_content, 'text/html')
+    msg.send()
+    print(f'msg sent {sending_time}')
