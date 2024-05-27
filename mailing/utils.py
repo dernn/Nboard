@@ -1,5 +1,6 @@
 import datetime
 
+from Tools.demo.mcast import sender
 from django.conf import settings  # LazySettings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -30,6 +31,9 @@ def send_notification(text, pk, category, title, subscriber, sender, mode='creat
         template = 'comment_updated_email'
         status = 'accepted' if accept else 'declined'
         subject = f'{sender} has {status} your response'
+    elif mode == 'delete':
+        template = 'comment_delete_email'
+        subject = f'{sender} has deleted your response'
 
     html_content = render_to_string(
         # template changes depending on the mode
@@ -43,9 +47,12 @@ def send_notification(text, pk, category, title, subscriber, sender, mode='creat
         }
     )
 
+    # время отправки без микросекунд для заголовка [тестирование отправки]
+    sending_time = datetime.datetime.now().replace(microsecond=0)
+
     msg = EmailMultiAlternatives(
         # subject changes depending on the mode
-        subject=subject,
+        subject=f'{subject} [{sending_time}]',
         body='',  # body задаем выше в html_content
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[subscriber.email],

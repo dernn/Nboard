@@ -24,6 +24,7 @@ def celery_notify_create_comment(pk):
 def celery_notify_update_comment(pk):
     """
     Таска вызывается только при нажатии кнопки "Accept/Decline" автором поста.
+    Передает status для индикации действия "Accept/Decline".
     """
     instance = Comment.objects.get(pk=pk)
     post = instance.post
@@ -33,6 +34,21 @@ def celery_notify_update_comment(pk):
     status = instance.accept
 
     send_notification(instance.text, post.pk, post.category, post.title, subscriber, sender, mode, status)
+
+
+@shared_task
+def celery_notify_delete_comment(pk):
+    """
+    Таска вызывается при удалении комментария автором поста;
+    автор комментария получит на почту письмо с уведомлением.
+    """
+    instance = Comment.objects.get(pk=pk)
+    post = instance.post
+    subscriber = instance.author
+    sender = post.author
+    mode = 'delete'
+
+    send_notification(instance.text, post.pk, post.category, post.title, subscriber, sender, mode)
 
 # @shared_task
 # def celery_weekly_mailing():
