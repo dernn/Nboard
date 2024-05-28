@@ -24,4 +24,5 @@ urlpatterns = [
     path('board/', include('board.urls')),
     path('accounts/', include('allauth.urls')),
     path('', RedirectView.as_view(url='board/', permanent=False)),
+    path('sign/', include('sign.urls')),
 ]

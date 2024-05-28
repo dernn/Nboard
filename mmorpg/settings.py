@@ -161,7 +161,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'mandatory'
-# ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
+ACCOUNT_FORMS = {'signup': 'sign.forms.CommonSignupForm'}
 # ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 # for django.core.mail

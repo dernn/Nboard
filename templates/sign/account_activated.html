@@ -1,0 +1,10 @@
+{% extends 'bootstrap/index.html' %}
+{% block title %}Account activation{% endblock title %}
+{% block content %}
+    <h3>Account activated</h3>
+    <h5>Account activation was successful.</h5>
+    <form>
+        <input type="button" onclick="location.href='/board/'" class="btn btn-outline-secondary btn-sm"
+               value="Return to homepage"/>
+    </form>
+{% endblock %}
