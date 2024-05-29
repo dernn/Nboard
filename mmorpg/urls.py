@@ -14,8 +14,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from ckeditor_uploader.views import upload, browse
 from django.contrib import admin
-from django.urls import include, path
+from django.contrib.auth.decorators import login_required
+from django.urls import include, path, re_path
 from django.views.generic import RedirectView
 
 from django.conf import settings
@@ -29,4 +31,9 @@ urlpatterns = [
     path('', RedirectView.as_view(url='board/', permanent=False)),
     path('sign/', include('sign.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    re_path(r'^upload/', login_required(upload), name='ckeditor_upload'),
+    re_path(r'^browse/', login_required(never_cache(browse)), name='ckeditor_browse'),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
