@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     # install core & additional applications
     'board',
+    'sign',
     'django_filters',
     'allauth',
     'allauth.account',
