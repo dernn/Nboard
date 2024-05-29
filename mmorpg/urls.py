@@ -18,6 +18,7 @@ from ckeditor_uploader.views import upload, browse
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.urls import include, path, re_path
+from django.views.decorators.cache import never_cache
 from django.views.generic import RedirectView
 
 from django.conf import settings
@@ -31,6 +32,9 @@ urlpatterns = [
     path('', RedirectView.as_view(url='board/', permanent=False)),
     path('sign/', include('sign.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    # re_path(r'^upload/', login_required(upload), name='ckeditor_upload'),
-    # re_path(r'^browse/', login_required(browse), name='ckeditor_browse'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    re_path(r'^upload/', login_required(upload), name='ckeditor_upload'),
+    re_path(r'^browse/', login_required(never_cache(browse)), name='ckeditor_browse'),
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
