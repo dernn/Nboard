@@ -10,8 +10,10 @@
     </div>
     <form method="POST">
         {% csrf_token %}
-        {{ field.as_p }}
-        {{ field.media }}
+        <div class="space-10">
+        {{ form.as_p }}
+        {{ form.media }}
+        </div>
         <div class="space-10">
             <input type="submit" value="Post">
         </div>

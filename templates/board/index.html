@@ -14,8 +14,7 @@ Board
                 <a href="{% url 'post_category' post.category.id %}"> #{{ post.category }}</a><br>
                 by <i>{{ post.author }}</i><br>
                 {{ post.pub_date|date:'d F, Y' }}<br>
-                <!-- post.preview? -->
-                {{ post.text|truncatewords:20 }}<br>
+                {{ post.text|truncatewords:20|safe }}<br>
                 <a href="{% url 'comment_create' post.id %}">Respond</a>
                 <a href="{% url 'post_update' post.id %}">Edit</a>
             </div>

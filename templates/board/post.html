@@ -11,7 +11,7 @@ Post
     <div class="space-10">
         by <i>{{ post.author }}</i><br>
         {{ post.pub_date|date:'d F, Y' }}<br>
-        {{ post.text }}<br>
+        {{ post.text|safe }}<br>
         <a href="{% url 'comment_create' post.id %}">Respond</a>
         <a href="{% url 'post_update' post.id %}">Edit</a>
     </div>
@@ -26,6 +26,6 @@ Post
     {% endfor %}
 
     <div class="text-center space-10">
-        <input type="button" value="back" onclick="window.history.back()">
+        <input type="button" value="Main page" onclick="location.href='/board/'">
     </div>
 {% endblock content %}
