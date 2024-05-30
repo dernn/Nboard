@@ -151,7 +151,11 @@ CKEDITOR_CONFIGS = {
             {'name': 'basicstyles',
              'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
             {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList']},
-            {'name': 'insert', 'items': ['Image', 'Smiley']},
+            {'name': 'insert', 'items': [
+                'Image',  # Image upload
+                'Smiley',
+                'Youtube'  # Youtube plugin
+            ]},
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
             '/',  # put this to force next toolbar on new line
             {'name': 'yourcustomtools', 'items': [
@@ -171,13 +175,14 @@ CKEDITOR_CONFIGS = {
         # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
         'tabSpaces': 4,
         'extraPlugins': ','.join([
-            'uploadimage', # the upload image feature
+            'uploadimage',  # the upload image feature
             # your extra plugins here
             'div',
             'autolink',
             'autoembed',
             'embedsemantic',
             'autogrow',
+            'youtube',
             # 'devtools',
             'widget',
             'lineutils',
