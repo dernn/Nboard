@@ -12,7 +12,7 @@ Board
                 <a href="{% url 'post_detail' post.id %}"><h6>{{ post.title }}</h6></a>
                 by <i>{{ post.author }}</i><br>
                 {{ post.pub_date|date:'d F, Y' }}<br>
-                {{ post.text|truncatewords:20 }}<br>
+                {{ post.text|truncatewords:20|safe }}<br>
             </div>
         {% endfor %}
     {% else %}

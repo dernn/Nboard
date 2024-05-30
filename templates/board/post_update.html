@@ -11,10 +11,8 @@
     <form method="POST">
         {% csrf_token %}
         <div class="space-10">
-            {% for field in form %}
-                {{ field.label_tag }}<br>
-                {{ field }}<br>
-            {% endfor %}
+        {{ form.as_p }}
+        {{ form.media }}
         </div>
         <div class="space-10">
             <input type="submit" value="Update">
